@@ -1,2 +1,2 @@
 # sist-gerenciamento-hotel
-Sistema para gerenciamento de estoque utilizando Java JDBC e MySql
+Sistema para gerenciamento de hotel utilizando Java JDBC e MySql
