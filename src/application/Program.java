@@ -14,7 +14,7 @@ public class Program {
 		Locale.setDefault(Locale.US);
 		Scanner scanner = new Scanner(System.in);
 		MenuController menu = new MenuController(scanner);
-		ExecutarOpController executarOp = new ExecutarOpController();
+		ExecutarOpController executarOp = new ExecutarOpController(scanner);
 		System.out.println(GerenciadorMensagens.PROGRAM_ABERTURA);
 		int menuOp = 0;
 		do {
@@ -23,9 +23,6 @@ public class Program {
 			executarOp.executarOp(menuOp);
 		} while (menuOp != 0);
 		System.out.println(GerenciadorMensagens.PROGRAM_ENCERRAMENTO);
-	
 		scanner.close();
-
 	}
-
 }

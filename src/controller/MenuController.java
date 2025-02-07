@@ -16,6 +16,7 @@ public class MenuController {
 	public void mostrarMenu() {
 		System.out.println(GerenciadorMensagens.MENU_CONTROLLER_MENU_OP_0);
 		System.out.println(GerenciadorMensagens.MENU_CONTROLLER_MENU_OP_1);
+		System.out.println(GerenciadorMensagens.MENU_CONTROLLER_MENU_OP_2);
 	}
 	
 	public int obterOpMenu() {
@@ -38,7 +39,7 @@ public class MenuController {
 	}
 	
 	public void testarOp(int op) {
-		if (op < 0 || op > 1) {
+		if (op < 0 || op > 2) {
 			throw new IllegalArgumentException(GerenciadorMensagens.MENU_CONTROLLER_OPÇAO_INVALIDA);
 		}
 	}

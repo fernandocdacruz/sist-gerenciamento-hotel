@@ -53,4 +53,20 @@ public class QuartoDaoJDBC implements QuartoDao {
 		return quarto;
 	}
 
+	@Override
+	public void atualizarDisponibilidade(int id) {
+		
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE quartos SET disponivel = 'INDISPONIVEL' WHERE id = ?");
+			st.setInt(1, id);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
+	}
+
 }
