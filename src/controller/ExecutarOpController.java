@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
@@ -11,6 +10,7 @@ import model.entities.Quarto;
 import model.entities.Reserva;
 import model.enums.DisponibilidadeQuarto;
 import utilities.GerenciadorMensagens;
+import utilities.ObterInt;
 import utilities.ObterString;
 
 public class ExecutarOpController {
@@ -31,9 +31,7 @@ public class ExecutarOpController {
 			break;
 		case 2: fazerReserva();
 			break;
-		case 3:
-			break;
-		case 4:
+		case 3: cancelarReserva();
 			break;
 		}
 	}
@@ -53,20 +51,34 @@ public class ExecutarOpController {
 		if (quartosDisponiveis.isEmpty()) {
 			System.out.println(GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_QUARTOS_INDISPONIVEIS);
 		} else {
-			String cliente = ObterString.obterString(scanner, "\nDigite o nome do responsável pela reserva: ");
-			System.out.print("Digite o número do quarto: ");
-			int numero = scanner.nextInt();
+			String cliente = ObterString.obterString(scanner, GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_NOME_RESERVA);
+			int numero = ObterInt.obterInt(scanner, GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_NUMERO_QUARTO, 1);
 			Quarto quarto = quartosDisponiveis.stream().filter(q -> q.getNumero() == numero).findFirst().orElse(null);
 			if (quarto.getDisponivel() == DisponibilidadeQuarto.INDISPONIVEL) {
-				System.out.println("\nQuarto indisponível. Tente novamente.");
+				System.out.println(GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_QUARTOS_INDISPONIVEIS);
 			} else {
 				Reserva reserva = new Reserva(cliente, quarto);
 				reservaDao.criarReserva(reserva);
-				quartoDao.atualizarDisponibilidade(reserva.getQuarto().getId());
-				System.out.println("\nReserva feita com sucesso!");
-				
+				quartoDao.atualizarDisponibilidadeParaIndisponivel(reserva.getQuarto().getId());
+				System.out.println(GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_RESERVA_REALIZADA);
 			}
+	
 		}
 	}
 	
+	public void cancelarReserva() {
+		List<Reserva> reservas = reservaDao.listarTodasReservas();
+		if (reservas.isEmpty()) {
+			System.out.println(GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_RESERVAS_VAZIO);
+		} else {
+			System.out.println();
+			reservas.forEach(System.out::println);
+			int idReserva = ObterInt.obterInt(scanner, GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_ID_RESERVA, 3);
+			Reserva reserva = reservas.stream().filter(r -> r.getId() == idReserva).findFirst().orElse(null);
+			reservaDao.deletarReserva(idReserva);
+			quartoDao.atualizarDisponibilidadeParaDisponivel(reserva.getQuarto().getId());
+			System.out.println(GerenciadorMensagens.EXECUTAR_OP_CONTROLLER_RESERVA_CANCELADA);
+		}
+	}
+
 }

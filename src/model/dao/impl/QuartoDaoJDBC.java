@@ -16,7 +16,7 @@ import model.enums.DisponibilidadeQuarto;
 public class QuartoDaoJDBC implements QuartoDao {
 
 	private Connection conn;
-	
+
 	public QuartoDaoJDBC(Connection conn) {
 		super();
 		this.conn = conn;
@@ -27,8 +27,7 @@ public class QuartoDaoJDBC implements QuartoDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"select quartos.* from quartos where disponivel = DISPONIVEL");
+			st = conn.prepareStatement("select quartos.* from quartos where disponivel = 'disponivel'");
 			rs = st.executeQuery();
 			List<Quarto> quartos = new ArrayList<>();
 			while (rs.next()) {
@@ -38,13 +37,12 @@ public class QuartoDaoJDBC implements QuartoDao {
 			return quartos;
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
 	}
-	
+
 	private Quarto instanciarQuarto(ResultSet rs) throws SQLException {
 		Quarto quarto = new Quarto();
 		quarto.setId(rs.getInt("id"));
@@ -54,8 +52,8 @@ public class QuartoDaoJDBC implements QuartoDao {
 	}
 
 	@Override
-	public void atualizarDisponibilidade(int id) {
-		
+	public void atualizarDisponibilidadeParaIndisponivel(int id) {
+
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("UPDATE quartos SET disponivel = 'INDISPONIVEL' WHERE id = ?");
@@ -63,10 +61,25 @@ public class QuartoDaoJDBC implements QuartoDao {
 			st.executeUpdate();
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
+	
+	@Override
+	public void atualizarDisponibilidadeParaDisponivel(int id) {
+
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE quartos SET disponivel = 'DISPONIVEL' WHERE id = ?");
+			st.setInt(1, id);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+	}
+
 
 }

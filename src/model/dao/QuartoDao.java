@@ -6,5 +6,6 @@ import model.entities.Quarto;
 
 public interface QuartoDao {
 	List<Quarto> acharQuartosDisponiveis();
-	void atualizarDisponibilidade(int numero);
+	void atualizarDisponibilidadeParaIndisponivel(int numero);
+	void atualizarDisponibilidadeParaDisponivel(int numero);
 }

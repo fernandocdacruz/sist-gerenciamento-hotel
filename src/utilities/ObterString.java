@@ -1,6 +1,5 @@
 package utilities;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ObterString {
@@ -34,9 +33,9 @@ public class ObterString {
 		return testeFraseVazia;
 	}
 	
-	private static void testarExcessao(Boolean testeFraseVazia) {
+	private static void testarExcessao(boolean testeFraseVazia) {
 		if (testeFraseVazia) {
-			throw new IllegalArgumentException("\nEsse input não pode ficar em branco. Tente novamente.");
+			throw new IllegalArgumentException(GerenciadorMensagens.OBTER_STRING_INPUT_EM_BRANCO);
 		}
 	}
 

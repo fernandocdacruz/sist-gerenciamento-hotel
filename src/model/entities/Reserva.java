@@ -37,5 +37,12 @@ public class Reserva {
 	public void setQuarto(Quarto quarto) {
 		this.quarto = quarto;
 	}
+
+	@Override
+	public String toString() {
+		return "Reserva ID: " + id + " - Cliente: " + cliente + " - Quarto número: " + getQuarto().getNumero();
+	}
+	
+	
 	
 }
